@@ -89,14 +89,31 @@ const closers = [
   ' no médio e longo prazo',
 ]
 
+const gerunds = ['garantindo', 'maximizando', 'blindando', 'acelerando', 'sustentando', 'democratizando', 'gamificando']
+
+const prefixes = [
+  'Olhando o big picture,',
+  'Num cenário VUCA,',
+  'Sendo bem transparente com vocês,',
+  'Trazendo pra mesa um insight,',
+  'Puxando um pouco o helicóptero,',
+  'Sem querer ser o advogado do diabo,',
+  'Pensando como dono,',
+]
+
 const pick = arr => arr[Math.floor(Math.random() * arr.length)]
 const shuffle = arr => [...arr].sort(() => Math.random() - 0.5)
 
-export function generateSentence() {
-  const [a, b, c] = shuffle(nouns)
+export function generateSentence(level = 2) {
+  const [a, b, c, d] = shuffle(nouns)
   const [v1, v2] = shuffle(verbs)
-  const [adj1, adj2] = shuffle(adjectives)
+  const [adj1, adj2, adj3] = shuffle(adjectives)
   const g = noun => noun.startsWith('a ') ? 1 : 0
 
-  return `${pick(openers)} ${v1} ${a} ${adj1[g(a)]} ${pick(connectors)} ${v2} ${b} d${c} ${adj2[g(c)]}${pick(closers)}.`
+  let text = `${pick(openers)} ${v1} ${a} ${adj1[g(a)]}`
+  if (level >= 2) text += ` ${pick(connectors)} ${v2} ${b} d${c} ${adj2[g(c)]}`
+  if (level >= 3) text += `, ${pick(gerunds)} ${d} ${adj3[g(d)]}`
+  if (level >= 4) text = `${pick(prefixes)} ${text[0].toLowerCase()}${text.slice(1)}`
+
+  return text + pick(closers) + '.'
 }
